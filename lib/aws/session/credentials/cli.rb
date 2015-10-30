@@ -42,23 +42,23 @@ module Aws
                       type: :numeric,
                       desc: 'Six digit code from MFA device',
                       default: nil
-        desc 'Generates new AWS session credentials'
-        def new_aws_session
+        desc 'new', 'Generates new AWS session credentials'
+        def new
           config = Config.new(options['config-file'])
-          config.access_key_id      ||= options['access-key-id']
-          config.secret_access_key  ||= options['secret-access-key']
-          config.region             ||= options['region']
-          config.credential_file    ||= options['credential-file']
-          config.profile            ||= options['profile']
-          config.duration           ||= options['duration']
-          config.mfa_device         ||= options['mfa-device']
+          config.aws_access_key_id      ||= options['access-key-id']
+          config.aws_secret_access_key  ||= options['secret-access-key']
+          config.region                 ||= options['region']
+          config.credential_file        ||= options['credential-file']
+          config.profile                ||= options['profile']
+          config.duration               ||= options['duration']
+          config.mfa_device             ||= options['mfa-device']
 
           cf = CredentialFile.new(config.credential_file)
           sb = SessionBuilder.new(config.to_h)
           sb.update_credential_file(cf)
         end
 
-        default_task :new_aws_session
+        default_task :new
       end
     end
   end
