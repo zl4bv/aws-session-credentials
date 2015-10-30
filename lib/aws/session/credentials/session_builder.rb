@@ -28,7 +28,11 @@ module Aws
             serial_number: @config['mfa_device'],
             token_code: @config['mfa_code']
           )
-          return resp.credentials if resp
+          return {
+            'aws_access_key_id' => resp.credentials['access_key_id'],
+            'aws_secret_access_key' => resp.credentials['secret_access_key'],
+            'aws_session_token' => resp.credentials['session_token']
+          } if resp
         end
 
         # Gets a set of session credentials and updates them in a credential
