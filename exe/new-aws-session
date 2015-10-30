@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'aws/session/credentials/cli'
+
+Aws::Session::Credentials::Cli.start

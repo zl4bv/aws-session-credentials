@@ -1,9 +1,9 @@
-require "aws/session/credentials/version"
+require 'aws-sdk'
+require 'inifile'
+require 'yaml'
 
-module Aws
-  module Session
-    module Credentials
-      # Your code goes here...
-    end
-  end
-end
+require 'aws/session/credentials/config'
+require 'aws/session/credentials/credential_file'
+require 'aws/session/credentials/session_builder'
+
+require 'aws/session/credentials/version'
