@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Command-line tool to generate AWS session credentials.}
   spec.description   = %q{Command-line tool to generate AWS session credentials.}
   spec.homepage      = 'https://github.com/zl4bv/aws-session-credentials'
+  spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'
