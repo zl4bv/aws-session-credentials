@@ -1,6 +1,7 @@
 # Aws::Session::Credentials
 
 [![Build Status](https://travis-ci.org/zl4bv/aws-session-credentials.svg)](https://travis-ci.org/zl4bv/aws-session-credentials)
+[![Gem Version](https://badge.fury.io/rb/aws-session-credentials.svg)](https://badge.fury.io/rb/aws-session-credentials)
 
 Command-line tool to generate AWS session credentials.
 
