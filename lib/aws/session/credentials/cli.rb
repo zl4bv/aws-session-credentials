@@ -39,7 +39,7 @@ module Aws
                       desc: 'ARN of MFA device',
                       default: nil
         method_option 'mfa-code',
-                      type: :numeric,
+                      type: :string,
                       desc: 'Six digit code from MFA device',
                       default: nil
         desc 'new', 'Generates new AWS session credentials'
