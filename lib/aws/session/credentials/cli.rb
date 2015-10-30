@@ -52,6 +52,7 @@ module Aws
           config.profile                ||= options['profile']
           config.duration               ||= options['duration']
           config.mfa_device             ||= options['mfa-device']
+          config.mfa_code               ||= options['mfa-code']
 
           cf = CredentialFile.new(config.credential_file)
           sb = SessionBuilder.new(config.to_h)

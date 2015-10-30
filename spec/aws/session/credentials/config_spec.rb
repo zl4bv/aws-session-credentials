@@ -72,6 +72,12 @@ describe Aws::Session::Credentials::Config do
     end
   end
 
+  describe '#mfa_code' do
+    let(:config) { { 'mfa_code' => 'v' } }
+
+    its(:mfa_code) { is_expected.to eq('v') }
+  end
+
   describe '#mfa_device' do
     let(:config) { { 'mfa_device' => 'v' } }
 

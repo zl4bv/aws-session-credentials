@@ -54,6 +54,14 @@ module Aws
           YAML.load(File.read(@path))
         end
 
+        def mfa_code
+          self['mfa_code']
+        end
+
+        def mfa_code=(value)
+          self['mfa_code'] = value
+        end
+
         def mfa_device
           self['mfa_device']
         end
