@@ -7,17 +7,6 @@ describe Aws::Session::Credentials::CredentialFile do
     allow(File).to receive(:expand_path).and_return(path)
   end
 
-  describe '#init_ini_file' do
-    let(:loaded_ini_file) { double('init file') }
-    let(:ini_file) { {} }
-
-    before do
-      allow(IniFile).to receive(:load).with(path).and_return(loaded_ini_file)
-    end
-
-    its(:init_ini_file) { is_expected.to eq(loaded_ini_file) }
-  end
-
   describe '#set_credentials' do
     let(:ini_file) { double('inifile') }
     let(:profile) { 'a' }

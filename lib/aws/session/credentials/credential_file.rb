@@ -12,7 +12,13 @@ module Aws
 
         # @api private
         def init_ini_file
-          IniFile.load(@path)
+          if File.exist?(@path)
+            IniFile.load(@path)
+          else
+            path_dir = File.dirname(@path)
+            FileUtils.mkdir_p(path_dir) unless File.exist?(path_dir)
+            IniFile.new(filename: @path, encoding: 'UTF-8') 
+          end
         end
 
         # Sets credentials for provided profile.

@@ -1,4 +1,5 @@
 require 'aws-sdk'
+require 'fileutils'
 require 'inifile'
 require 'yaml'
 
