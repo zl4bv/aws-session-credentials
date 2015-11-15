@@ -9,6 +9,21 @@ module Aws
         # @option options [String] :role_arn
         # @option options [String] :duration
         def assume_role(options)
+          options[:profile] = options[:profile].to_sym
+
+          session_prof = Cache.new.profile(options[:profile])
+          options = session_prof.to_h.deep_merge(options).deep_symbolize_keys
+
+          sb = SessionBuilder.new(
+            mfa_device: mfa_device(options),
+            role_duration_seconds: options[:duration],
+            role_arn: options[:role_arn],
+            role_session_name: options[:role_session_name],
+            source_profile: session_prof
+          )
+          role_profile = sb.role_profile
+
+          CredentialFile.new.set_profile(options[:profile], profile)
         end
 
         # Creates a new session from provided options

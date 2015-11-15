@@ -18,12 +18,12 @@ module Aws
 
         # @return [Hash<String,Hash>]
         def profiles_hash
-          self['profiles'] || {}
+          self[:profiles] || {}
         end
 
         # @param [Hash] hsh
         def profiles_hash=(hsh)
-          self['profiles'] = hsh
+          self[:profiles] = hsh
         end
       end
     end
