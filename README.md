@@ -27,6 +27,8 @@ Or install it yourself as:
 
 ## Usage
 
+### Generating new session credentials
+
 Example:
 
 ```
@@ -42,38 +44,58 @@ Usage:
   aws-session
 
 Options:
-  [--access-key-id=ACCESS-KEY-ID]          # Access key used to generate session token
-  [--secret-access-key=SECRET-ACCESS-KEY]  # Secret key used to generate session token
-  [--region=REGION]                        # AWS region to connect to
-  [--config-file=CONFIG-FILE]              # YAML file to load config from
-                                           # Default: ~/.aws/credentials.yml
-  [--credential-file=CREDENTIAL-FILE]      # INI file to save session credentials to
-                                           # Default: ~/.aws/credentials
-  [--profile=PROFILE]                      # Profile that session token will be loaded into
-                                           # Default: default
-  [--duration=N]                           # Duration, in seconds, that credentials should remain valid
-                                           # Default: 1
-  [--mfa-device=MFA-DEVICE]                # ARN of MFA device
-  [--mfa-code=MFA-CODE]                    # Six digit code from MFA device
+Usage:
+  aws-session new
+
+Options:
+  [--aws-access-key-id=AWS-ACCESS-KEY-ID]          # Access key used to generate session token
+  [--aws-secret-access-key=AWS-SECRET-ACCESS-KEY]  # Secret key used to generate session token
+  [--aws-region=AWS-REGION]                        # AWS region to connect to
+  [--config-file=CONFIG-FILE]                      # YAML file to load config from
+                                                   # Default: ~/.aws/aws-session-config.yml
+  [--source-profile=SOURCE-PROFILE]                # Profile in config file that user credentials will be loaded from
+                                                   # Default: default
+  [--profile=PROFILE]                              # Profile that session token will be loaded into
+                                                   # Default: default
+  [--duration=N]                                   # Duration, in seconds, that credentials should remain valid
+  [--mfa-device=MFA-DEVICE]                        # ARN of MFA device
+  [--mfa-code=MFA-CODE]                            # Six digit code from MFA device
+  [--yubikey-name=YUBIKEY-NAME]                    # Name of yubikey device
+                                                   # Default: Yubikey
+  [--oath-credential=OATH-CREDENTIAL]              # Name of OATH credential
 ```
 
-### Config File
-
-By default this is located at `~/.aws/aws-session-config.yml`.
+### Assuming a role
 
 Example:
 
-```yaml
----
-profiles:
-  default: # To load a different profile use the `--source-profile` CLI option
-    aws_access_key_id: AKIAIOSFODNN7EXAMPLE
-    aws_secret_access_key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-    region: ap-southeast-2
-    duration: 86400
-    mfa_device: arn:aws:iam::000000000000:mfa/user.name@example.com
-    oath_credential: user.name@example.com@accountalias
 ```
+$ aws-session assume-role --role-arn=ROLE_ARN --role-session-name=ROLE_SESSION_NAME
+```
+
+### Source profiles
+
+Instead of specifying all of the options via the command line each time you
+want to generate new session credentials, you can store the options in a
+*source profile*.
+
+```
+$ aws-session configure
+Source profile (leave blank for "default"):
+AWS Access Key ID: AKIAIOSFODNN7EXAMPLE
+AWS Secret Access Key:
+AWS region: ap-southeast-2
+Session duration (in seconds): 86400
+
+Configure MFA? y
+MFA device ARN: arn:aws:iam::000000000000:mfa/user.name@example.com
+
+Configure Yubikey? y
+OATH credential name: user.name@example.com@accountalias
+```
+
+See `aws-session --help configure` for more info. By default, the configuration
+is stored in `~/.aws/aws-session-config.yml`.
 
 ## Contributing
 
