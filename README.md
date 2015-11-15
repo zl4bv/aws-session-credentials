@@ -25,6 +25,14 @@ Or install it yourself as:
 
     $ gem install aws-session-credentials
 
+### Building native extensions for dependencies
+
+On Ubuntu, you may need to run the following before installing this gem:
+
+```
+$ sudo apt-get install libccid libpcsclite-dev pcscd pcsc-tools
+```
+
 ## Usage
 
 ### Generating new session credentials
