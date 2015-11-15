@@ -1,7 +1,10 @@
 language: ruby
 rvm:
-- 2.2.3
-before_install: gem install bundler -v 1.10.6
+  - 2.2.3
+before_install:
+  - gem install bundler -v 1.10.6
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libccid libpcsclite-dev pcscd pcsc-tools
 deploy:
   provider: rubygems
   api_key:
