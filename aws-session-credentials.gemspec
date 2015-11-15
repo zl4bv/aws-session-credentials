@@ -29,5 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'inifile', '~> 3.0'
   spec.add_runtime_dependency 'smartcard'
   spec.add_runtime_dependency 'thor', '~> 0.19'
-  spec.add_runtime_dependency 'yubioath'
+  spec.add_runtime_dependency 'yubioath', '~> 1.0.0'
 end
