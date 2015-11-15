@@ -156,6 +156,11 @@ module Aws
           cf.set_profile(cli_opts[:source_profile], prof)
         end
 
+        desc 'version', 'Prints the current version'
+        def version
+          puts "aws-session-credentials #{Aws::Session::Credentials::VERSION}"
+        end
+
         default_task :new
       end
     end
