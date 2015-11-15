@@ -23,7 +23,7 @@ module Aws
           )
           role_profile = sb.role_profile
 
-          CredentialFile.new.set_profile(options[:profile], profile)
+          CredentialFile.new.set_profile(options[:profile], role_profile)
         end
 
         # Creates a new session from provided options
