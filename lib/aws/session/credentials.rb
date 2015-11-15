@@ -1,10 +1,25 @@
+require 'active_support'
+require 'active_support/core_ext/hash'
 require 'aws-sdk'
 require 'fileutils'
 require 'inifile'
+require 'ostruct'
+require 'smartcard'
 require 'yaml'
+require 'yubioath'
 
+require 'aws/session/credentials/file_provider/ini_file_provider'
+require 'aws/session/credentials/file_provider/yaml_file_provider'
+require 'aws/session/credentials/mfa_device/generic_mfa_device'
+require 'aws/session/credentials/mfa_device/yubikey_mfa_device'
+
+require 'aws/session/credentials/profile_storage'
+
+require 'aws/session/credentials/cache'
 require 'aws/session/credentials/config'
 require 'aws/session/credentials/credential_file'
+require 'aws/session/credentials/profile'
 require 'aws/session/credentials/session_builder'
+require 'aws/session/credentials/session_manager'
 
 require 'aws/session/credentials/version'

@@ -59,17 +59,20 @@ Options:
 
 ### Config File
 
-By default this is located at `~/.aws/credentials.yml`.
+By default this is located at `~/.aws/aws-session-config.yml`.
 
 Example:
 
 ```yaml
 ---
-aws_access_key_id: AKIAIOSFODNN7EXAMPLE
-aws_secret_access_key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-region: ap-southeast-2
-duration: 86400
-mfa_device: arn:aws:iam::000000000000:mfa/user.name@example.com
+profiles:
+  default: # To load a different profile use the `--source-profile` CLI option
+    aws_access_key_id: AKIAIOSFODNN7EXAMPLE
+    aws_secret_access_key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    region: ap-southeast-2
+    duration: 86400
+    mfa_device: arn:aws:iam::000000000000:mfa/user.name@example.com
+    oath_credential: user.name@example.com@accountalias
 ```
 
 ## Contributing

@@ -1,10 +1,10 @@
 module Aws
   module Session
     module Credentials
-      # Holds credentials that are read by AWS SDKs
-      class CredentialFile
-        include FileProvider::IniFileProvider
+      # Holds session credentials
+      class Cache
         include ProfileStorage
+        include FileProvider::YamlFileProvider
 
         attr_reader :path
 
@@ -13,17 +13,17 @@ module Aws
         end
 
         def default_path
-          File.join(%w(~ .aws credentials))
+          File.join(%w(~ .aws aws-session-cache.yml))
         end
 
         # @return [Hash<String,Hash>]
         def profiles_hash
-          read.to_h
+          self['profiles'] || {}
         end
 
-        # @param [Hash<String,Hash>] prfs
+        # @param [Hash] hsh
         def profiles_hash=(hsh)
-          hsh.each { |key, value| self[key] = value }
+          self['profiles'] = hsh
         end
       end
     end

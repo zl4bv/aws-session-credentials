@@ -6,26 +6,30 @@ module Aws
     module Credentials
       # Command line interface
       class Cli < Thor
-        method_option 'access-key-id',
+        method_option 'aws-access-key-id',
                       type: :string,
                       desc: 'Access key used to generate session token',
                       default: nil
-        method_option 'secret-access-key',
+        method_option 'aws-secret-access-key',
                       type: :string,
                       desc: 'Secret key used to generate session token',
                       default: nil
-        method_option 'region',
+        method_option 'aws-region',
                       type: :string,
                       desc: 'AWS region to connect to',
                       default: nil
         method_option 'config-file',
                       type: :string,
                       desc: 'YAML file to load config from',
-                      default: '~/.aws/credentials.yml'
+                      default: '~/.aws/aws-session-config.yml'
         method_option 'credential-file',
                       type: :string,
                       desc: 'INI file to save session credentials to',
                       default: '~/.aws/credentials'
+        method_option 'source-profile',
+                      type: :string,
+                      desc: 'Profile in config file that user credentials will be loaded from',
+                      default: 'default'
         method_option 'profile',
                       type: :string,
                       desc: 'Profile that session token will be loaded into',
@@ -33,7 +37,7 @@ module Aws
         method_option 'duration',
                       type: :numeric,
                       desc: 'Duration, in seconds, that credentials should remain valid',
-                      default: 1
+                      default: nil
         method_option 'mfa-device',
                       type: :string,
                       desc: 'ARN of MFA device',
@@ -42,21 +46,18 @@ module Aws
                       type: :string,
                       desc: 'Six digit code from MFA device',
                       default: nil
+        method_option 'yubikey-name',
+                      type: :string,
+                      desc: 'Name of yubikey device',
+                      default: 'Yubikey'
+        method_option 'oath-credential',
+                      type: :string,
+                      desc: 'Name of OATH credential',
+                      default: nil
         desc 'new', 'Generates new AWS session credentials'
         def new
-          config = Config.new(options['config-file'])
-          config.aws_access_key_id      ||= options['access-key-id']
-          config.aws_secret_access_key  ||= options['secret-access-key']
-          config.region                 ||= options['region']
-          config.credential_file        ||= options['credential-file']
-          config.profile                ||= options['profile']
-          config.duration               ||= options['duration']
-          config.mfa_device             ||= options['mfa-device']
-          config.mfa_code               ||= options['mfa-code']
-
-          cf = CredentialFile.new(config.credential_file)
-          sb = SessionBuilder.new(config.to_h)
-          sb.update_credential_file(cf)
+          cli_opts = options.transform_keys { |key| key.sub(/-/, '_') }
+          SessionManager.new.new_session(cli_opts)
         end
 
         default_task :new
