@@ -141,10 +141,10 @@ module Aws
           cli_opts['duration'] ||= ask('Session duration (in seconds):')
 
           puts ''
-          if yes?('Configure MFA?')
+          if yes?('Configure MFA (y/n)?')
             cli_opts['mfa_device'] ||= ask('MFA device ARN:')
             puts ''
-            if yes?('Configure Yubikey?')
+            if yes?('Configure Yubikey (y/n)?')
               cli_opts['oath_credential'] ||= ask('OATH credential name:')
             end
           end
