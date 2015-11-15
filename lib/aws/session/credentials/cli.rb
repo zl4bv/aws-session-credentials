@@ -138,7 +138,7 @@ module Aws
           cli_opts['aws_secret_access_key'] ||= ask('AWS Secret Access Key:', echo: false)
           puts '' # BUG: No LF printed when echo is set to false
           cli_opts['aws_region'] ||= ask('AWS region:')
-          cli_opts['duration'] ||= ask('Session duration (in seconds):')
+          cli_opts['duration'] ||= ask('Session duration (in seconds):').to_i
 
           puts ''
           if yes?('Configure MFA (y/n)?')
