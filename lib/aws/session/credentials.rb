@@ -14,11 +14,13 @@ require 'aws/session/credentials/mfa_device/generic_mfa_device'
 require 'aws/session/credentials/mfa_device/yubikey_mfa_device'
 
 require 'aws/session/credentials/profile_storage'
+require 'aws/session/credentials/role_storage'
 
 require 'aws/session/credentials/cache'
 require 'aws/session/credentials/config'
 require 'aws/session/credentials/credential_file'
 require 'aws/session/credentials/profile'
+require 'aws/session/credentials/role'
 require 'aws/session/credentials/session_builder'
 require 'aws/session/credentials/session_manager'
 

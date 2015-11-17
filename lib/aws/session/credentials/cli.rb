@@ -56,18 +56,30 @@ module Aws
           SessionManager.new.new_session(cli_opts)
         end
 
-        method_option 'role_arn',
+        method_option 'role-alias',
                       type: :string,
-                      desc: 'The ARN of the role to assume',
-                      required: true
-        method_option 'role_session_name',
+                      desc: 'Name of stored role settings to use',
+                      default: nil
+        method_option 'role-account',
+                      type: :string,
+                      desc: 'Account ID or alias',
+                      default: nil
+        method_option 'role-name',
+                      type: :string,
+                      desc: 'Name of role to assume',
+                      default: nil
+        method_option 'role-arn',
+                      type: :string,
+                      desc: 'The ARN of the role to assume; alternative to providing role-account and role-name',
+                      default: nil
+        method_option 'role-session-name',
                       type: :string,
                       desc: 'An identifier for the assumed role session',
-                      required: true
+                      default: nil
         method_option 'profile',
                       type: :string,
                       desc: 'Profile that session token will be loaded into',
-                      default: 'default'
+                      default: nil
         method_option 'duration',
                       type: :numeric,
                       desc: 'Duration, in seconds, that credentials should remain valid',
@@ -91,6 +103,14 @@ module Aws
         desc 'assume-role', 'Assumes a role'
         def assume_role
           cli_opts = options.transform_keys { |key| key.sub(/-/, '_') }
+          cli_opts['role_arn'] ||= make_role_arn(cli_opts['role_account'], cli_opts['role_name'])
+
+          if cli_opts['role_alias']
+            cf = Config.new(path: cli_opts['config_file'])
+            rl = cf.role(cli_opts['role_alias'])
+            cli_opts = rl.to_h.deep_merge(cli_opts).deep_symbolize_keys
+          end
+
           SessionManager.new.assume_role(cli_opts)
         end
 
@@ -156,12 +176,107 @@ module Aws
           cf.set_profile(cli_opts[:source_profile], prof)
         end
 
+        method_option 'role-account',
+                      type: :string,
+                      desc: 'Account ID or alias',
+                      default: nil
+        method_option 'role-name',
+                      type: :string,
+                      desc: 'Name of role to assume',
+                      default: nil
+        method_option 'role-arn',
+                      type: :string,
+                      desc: 'The ARN of the role to assume; alternative to providing role-account and role-name',
+                      default: nil
+        method_option 'role-session-name',
+                      type: :string,
+                      desc: 'An identifier for the assumed role session',
+                      default: nil
+        method_option 'config-file',
+                      type: :string,
+                      desc: 'YAML file to load config from',
+                      default: '~/.aws/aws-session-config.yml'
+        method_option 'role-alias',
+                      type: :string,
+                      desc: 'Name/alias associated with role',
+                      default: nil
+        method_option 'profile',
+                      type: :string,
+                      desc: 'Profile that will used when assuming role',
+                      default: 'default'
+        method_option 'duration',
+                      type: :numeric,
+                      desc: 'Duration, in seconds, that credentials for assumed role should remain valid',
+                      default: nil
+        method_option 'mfa-device',
+                      type: :string,
+                      desc: 'ARN of MFA device',
+                      default: nil
+        method_option 'mfa-code',
+                      type: :string,
+                      desc: 'Six digit code from MFA device',
+                      default: nil
+        method_option 'yubikey-name',
+                      type: :string,
+                      desc: 'Name of yubikey device',
+                      default: 'Yubikey'
+        method_option 'oath-credential',
+                      type: :string,
+                      desc: 'Name of OATH credential',
+                      default: nil
+        desc 'configure-role', 'Configures a new role'
+        def configure_role
+          cli_opts = options.transform_keys { |key| key.sub(/-/, '_') }
+          cli_opts['role_alias'] ||= ask('Provide an alias for this role:')
+
+          if cli_opts['role_account'] && cli_opts['role_name']
+            cli_opts['role_arn'] = make_role_arn(cli_opts['role_account'], cli_opts['role_name'])
+          elsif !cli_opts['role_arn']
+            puts ''
+            if yes?('Provide role account and name instead of role ARN (y/n)?')
+              account = ask('Role account name:')
+              role_name = ask('Name of role:')
+              cli_opts['role_arn'] = make_role_arn(account, role_name)
+            else
+              cli_opts['role_arn']  = ask('Role ARN:')
+            end
+          end
+
+          unless cli_opts['role_session_name']
+            if yes?('Customise role session name (y/n)?')
+              cli_opts['role_session_name'] = ask('Role session name:')
+            else
+              account, role_name = split_role_arn(cli_opts['role_arn'])
+              cli_opts['role_session_name'] = "#{role_name} @ #{account}"
+            end
+          end
+
+          cli_opts['profile'] ||= ask('Profile to use when assuming role:')
+          cli_opts['duration'] ||= ask('Duration in seconds of assumed role:')
+
+          rl = Role.new(cli_opts.except('config_file'))
+          cf = Config.new(path: cli_opts['config_file'])
+          cf.set_role(cli_opts[:source_profile], rl)
+        end
+
         desc 'list-profiles', 'Lists profiles/sessions'
         def list_profiles
           store = CredentialFile.new
 
           puts "Available profiles in #{store.path}:"
           store.profiles.each { |name, _|  puts "  * #{name}" }
+        end
+
+        method_option 'config-file',
+                      type: :string,
+                      desc: 'YAML file to load config from',
+                      default: '~/.aws/aws-session-config.yml'
+        desc 'list-roles', 'Lists roles that have been saved'
+        def list_roles
+          store = Config.new(path: options['config-file'])
+
+          puts "Stored roles in #{store.path}:"
+          store.roles.each { |name, _|  puts "  * #{name}" }
         end
 
         method_option 'config-file',
@@ -179,6 +294,16 @@ module Aws
         desc 'version', 'Prints the current version'
         def version
           puts "aws-session-credentials #{Aws::Session::Credentials::VERSION}"
+        end
+
+        no_tasks do
+          def make_role_arn(account, role_name)
+            "arn:aws:iam::#{account}:role/#{role_name}"
+          end
+
+          def split_role_arn(role_arn)
+            role_arn.scan(%r{arn:aws:iam::(.+):role/(.+)}).first
+          end
         end
 
         default_task :new

@@ -4,6 +4,7 @@ module Aws
       # Holds configuration
       class Config
         include ProfileStorage
+        include RoleStorage
         include FileProvider::YamlFileProvider
 
         attr_reader :path

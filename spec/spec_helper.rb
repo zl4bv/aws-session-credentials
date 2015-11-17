@@ -6,5 +6,6 @@ require 'shared_examples/file_provider/yaml_file_provider'
 require 'shared_examples/file_provider'
 require 'shared_examples/mfa_device'
 require 'shared_examples/profile_store'
+require 'shared_examples/role_store'
 
 require 'rspec/its'
