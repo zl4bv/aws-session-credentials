@@ -26,6 +26,16 @@ module Aws
         def profiles_hash=(hsh)
           self[:profiles] = hsh
         end
+
+        # @return [Hash<String,Hash>]
+        def roles_hash
+          self[:roles] || {}
+        end
+
+        # @param [Hash] hsh
+        def roles_hash=(hsh)
+          self[:roles] = hsh
+        end
       end
     end
   end
