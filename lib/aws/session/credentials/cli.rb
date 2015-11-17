@@ -156,6 +156,26 @@ module Aws
           cf.set_profile(cli_opts[:source_profile], prof)
         end
 
+        desc 'list-profiles', 'Lists profiles/sessions'
+        def list_profiles
+          store = CredentialFile.new
+
+          puts "Available profiles in #{store.path}:"
+          store.profiles.each { |name, _|  puts "  * #{name}" }
+        end
+
+        method_option 'config-file',
+                      type: :string,
+                      desc: 'YAML file to load config from',
+                      default: '~/.aws/aws-session-config.yml'
+        desc 'list-source-profiles', 'Lists source profiles that have been saved'
+        def list_source_profiles
+          store = Config.new(path: options['config-file'])
+
+          puts "Available source profiles in #{store.path}:"
+          store.profiles.each { |name, _|  puts "  * #{name}" }
+        end
+
         desc 'version', 'Prints the current version'
         def version
           puts "aws-session-credentials #{Aws::Session::Credentials::VERSION}"
