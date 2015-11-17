@@ -256,7 +256,7 @@ module Aws
 
           rl = Role.new(cli_opts.except('config_file'))
           cf = Config.new(path: cli_opts['config_file'])
-          cf.set_role(cli_opts[:source_profile], rl)
+          cf.set_role(cli_opts[:role_alias], rl)
         end
 
         desc 'list-profiles', 'Lists profiles/sessions'
