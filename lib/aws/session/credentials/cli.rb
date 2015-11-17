@@ -107,7 +107,7 @@ module Aws
 
           if cli_opts['role_alias']
             cf = Config.new(path: cli_opts['config_file'])
-            rl = cf.role(cli_opts['role_alias'])
+            rl = cf.role(cli_opts['role_alias'].to_sym)
             cli_opts = rl.to_h.deep_merge(cli_opts).deep_symbolize_keys
           end
 
@@ -203,7 +203,7 @@ module Aws
         method_option 'profile',
                       type: :string,
                       desc: 'Profile that will used when assuming role',
-                      default: 'default'
+                      default: nil
         method_option 'duration',
                       type: :numeric,
                       desc: 'Duration, in seconds, that credentials for assumed role should remain valid',
@@ -251,7 +251,9 @@ module Aws
             end
           end
 
-          cli_opts['profile'] ||= ask('Profile to use when assuming role:')
+          cli_opts['profile'] ||= ask('Profile to use when assuming role (leave blank to use "default"):')
+          cli_opts['profile'] = 'default' if cli_opts['profile'].empty?
+
           cli_opts['duration'] ||= ask('Duration in seconds of assumed role:')
 
           rl = Role.new(cli_opts.except('config_file'))
