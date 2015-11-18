@@ -62,7 +62,7 @@ module Aws
                       default: nil
         method_option 'role-account',
                       type: :string,
-                      desc: 'Account ID or alias',
+                      desc: 'Account ID',
                       default: nil
         method_option 'role-name',
                       type: :string,
@@ -103,15 +103,16 @@ module Aws
         desc 'assume-role', 'Assumes a role'
         def assume_role
           cli_opts = options.transform_keys { |key| key.sub(/-/, '_') }
-          cli_opts['role_arn'] ||= make_role_arn(cli_opts['role_account'], cli_opts['role_name'])
 
           if cli_opts['role_alias']
             cf = Config.new(path: cli_opts['config_file'])
             rl = cf.role(cli_opts['role_alias'].to_sym)
-            cli_opts = rl.to_h.deep_merge(cli_opts).deep_symbolize_keys
+            cli_opts = rl.to_h.deep_stringify_keys.deep_merge(cli_opts)
           end
 
-          SessionManager.new.assume_role(cli_opts)
+          cli_opts['role_arn'] ||= make_role_arn(cli_opts['role_account'], cli_opts['role_name'])
+
+          SessionManager.new.assume_role(cli_opts.deep_symbolize_keys)
         end
 
         method_option 'aws-access-key-id',
@@ -178,7 +179,7 @@ module Aws
 
         method_option 'role-account',
                       type: :string,
-                      desc: 'Account ID or alias',
+                      desc: 'Account ID',
                       default: nil
         method_option 'role-name',
                       type: :string,
@@ -234,11 +235,11 @@ module Aws
           elsif !cli_opts['role_arn']
             puts ''
             if yes?('Provide role account and name instead of role ARN (y/n)?')
-              account = ask('Role account name:')
+              account = ask('Role account ID:')
               role_name = ask('Name of role:')
               cli_opts['role_arn'] = make_role_arn(account, role_name)
             else
-              cli_opts['role_arn']  = ask('Role ARN:')
+              cli_opts['role_arn'] = ask('Role ARN:')
             end
           end
 
