@@ -3,6 +3,16 @@ module Aws
     module Credentials
       # Mixin to store roles
       module RoleStorage
+        # @param [Thor::Shell] shell
+        def print_roles(shell)
+          roles_table = roles.map do |name, prof|
+            cols = [name]
+            cols << prof.role_arn
+            cols
+          end
+          shell.print_table(roles_table.unshift(['Alias', 'Role ARN']))
+        end
+
         # @return [Hash<String,Role>]
         def roles
           rls = {}

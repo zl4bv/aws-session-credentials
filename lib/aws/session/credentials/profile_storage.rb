@@ -3,6 +3,16 @@ module Aws
     module Credentials
       # Mixin to store profiles
       module ProfileStorage
+        # @param [Thor::Shell] shell
+        def print_profiles(shell)
+          profiles_table = profiles.map do |name, prof|
+            cols = [name]
+            cols << Time.at(prof['expiry']) if prof['expiry']
+            cols
+          end
+          shell.print_table(profiles_table.unshift(%w(Name Expiry)))
+        end
+
         # @return [Hash<String,Profile>]
         def profiles
           prfs = {}

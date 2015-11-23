@@ -27,7 +27,8 @@ module Aws
             aws_access_key_id: resp.credentials['access_key_id'],
             aws_secret_access_key: resp.credentials['secret_access_key'],
             aws_session_token: resp.credentials['session_token'],
-            aws_region: @source_profile.aws_region
+            aws_region: @source_profile.aws_region,
+            expiry: resp.credentials['expiration'].to_i
           ) if resp
         end
 
@@ -42,7 +43,8 @@ module Aws
             aws_access_key_id: resp.credentials['access_key_id'],
             aws_secret_access_key: resp.credentials['secret_access_key'],
             aws_session_token: resp.credentials['session_token'],
-            aws_region: @source_profile.aws_region
+            aws_region: @source_profile.aws_region,
+            expiry: resp.credentials['expiration'].to_i
           ) if resp
         end
 

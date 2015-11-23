@@ -266,8 +266,8 @@ module Aws
         def list_profiles
           store = CredentialFile.new
 
-          puts "Available profiles in #{store.path}:"
-          store.profiles.each { |name, _|  puts "  * #{name}" }
+          puts "Profiles located in #{store.path}:"
+          store.print_profiles(self)
         end
 
         method_option 'config-file',
@@ -278,8 +278,8 @@ module Aws
         def list_roles
           store = Config.new(path: options['config-file'])
 
-          puts "Stored roles in #{store.path}:"
-          store.roles.each { |name, _|  puts "  * #{name}" }
+          puts "Profiles located in #{store.path}:"
+          store.print_roles(self)
         end
 
         method_option 'config-file',
@@ -290,8 +290,8 @@ module Aws
         def list_source_profiles
           store = Config.new(path: options['config-file'])
 
-          puts "Available source profiles in #{store.path}:"
-          store.profiles.each { |name, _|  puts "  * #{name}" }
+          puts "Profiles located in #{store.path}:"
+          store.print_profiles(self)
         end
 
         desc 'version', 'Prints the current version'
