@@ -248,7 +248,7 @@ module Aws
               cli_opts['role_session_name'] = ask('Role session name:')
             else
               account, role_name = split_role_arn(cli_opts['role_arn'])
-              cli_opts['role_session_name'] = "#{role_name} @ #{account}"
+              cli_opts['role_session_name'] = "#{role_name}@#{account}"
             end
           end
 
