@@ -25,7 +25,7 @@ module Aws
           # @param [Hash] hash
           def write(hash)
             hsh = hash.deep_stringify_keys
-            File.open(path, 'w') { |file| file.write(YAML.dump(hsh)) }
+            File.open(path, 'w', 0600) { |file| file.write(YAML.dump(hsh)) }
           end
         end
       end

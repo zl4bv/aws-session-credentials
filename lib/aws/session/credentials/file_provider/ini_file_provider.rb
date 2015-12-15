@@ -20,7 +20,7 @@ module Aws
             if File.exist?(path)
               IniFile.load(path)
             else
-              IniFile.new(filename: path, encoding: 'UTF-8')
+              IniFile.new(filename: path, encoding: 'UTF-8', permissions: 0600)
             end
           end
         end
