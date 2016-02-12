@@ -23,6 +23,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rspec-its'
+  spec.add_development_dependency 'cucumber', '~> 2.3.2'
+  spec.add_development_dependency 'aruba', '~> 0.11.1'
 
   spec.add_runtime_dependency 'activesupport'
   spec.add_runtime_dependency 'aws-sdk', '~> 2.1'
