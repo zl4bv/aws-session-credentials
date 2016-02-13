@@ -12,4 +12,4 @@ Feature: Listing AWS IAM roles
   Scenario: There are no stored AWS IAM roles
     When I run `aws-session list roles` interactively
     Then the exit status should be 1
-    And the stdout should contain "There are no stored Roles"
+    And the stderr should contain "There are no stored Roles"

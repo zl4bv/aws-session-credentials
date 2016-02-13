@@ -12,4 +12,4 @@ Feature: Listing AWS credentials
   Scenario: There are no stored AWS credentials
     When I run `aws-session list credentials` interactively
     Then the exit status should be 1
-    And the stdout should contain "There are no stored credentials"
+    And the stderr should contain "There are no stored credentials"

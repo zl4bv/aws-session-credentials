@@ -11,4 +11,4 @@ Feature: Removing AWS accounts
   Scenario: The specified account is not stored
     When I run `aws-session remove account example` interactively
     Then the exit status should be 1
-    And the stdout should contain "Unknown account name `example`"
+    And the stderr should contain "Unknown account name `example`"

@@ -23,4 +23,4 @@ Feature: Refresh currently assumed credential or role
   Scenario: No previously assumed role
     When I run `aws-session refresh` interactively
     Then the exit status should be 1
-    And the stdout should contain "No currently assumed role"
+    And the stderr should contain "No currently assumed role"

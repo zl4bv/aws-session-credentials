@@ -11,4 +11,4 @@ Feature: Removing AWS roles
   Scenario: The specified role is not stored
     When I run `aws-session remove role example` interactively
     Then the exit status should be 1
-    And the stdout should contain "Unknown role name `example`"
+    And the stderr should contain "Unknown role name `example`"

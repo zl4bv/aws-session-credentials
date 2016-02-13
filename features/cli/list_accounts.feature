@@ -12,4 +12,4 @@ Feature: Listing AWS accounts
   Scenario: There are no stored AWS accounts
     When I run `aws-session list accounts` interactively
     Then the exit status should be 1
-    And the stdout should contain "There are no stored accounts"
+    And the stderr should contain "There are no stored accounts"

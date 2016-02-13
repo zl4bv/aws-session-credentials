@@ -12,4 +12,4 @@ Feature: Listing MFA devices
   Scenario: There are no stored MFA devices
     When I run `aws-session list mfa-devices` interactively
     Then the exit status should be 1
-    And the stdout should contain "There are no stored MFA devices"
+    And the stderr should contain "There are no stored MFA devices"

@@ -37,4 +37,4 @@ Feature: Using a stored role
     """
     When I run `aws-session assume credential example` interactively
     Then the exit status should be 1
-    And the stdout should contain "Unknown credential `example`"
+    And the stderr should contain "Unknown credential `example`"

@@ -11,4 +11,4 @@ Feature: Removing AWS credentials
   Scenario: The specified credential is not stored
     When I run `aws-session remove credential example` interactively
     Then the exit status should be 1
-    And the stdout should contain "Unknown credential `example`"
+    And the stderr should contain "Unknown credential `example`"

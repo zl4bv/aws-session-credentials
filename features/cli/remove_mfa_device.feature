@@ -11,4 +11,4 @@ Feature: Removing MFA devices
   Scenario: The specified MFA device is not stored
     When I run `aws-session remove mfa-device example` interactively
     Then the exit status should be 1
-    And the stdout should contain "Unknown MFA device `example`"
+    And the stderr should contain "Unknown MFA device `example`"

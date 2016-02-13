@@ -62,4 +62,4 @@ Feature: Storing AWS access credentials
     And the stdout should contain "AWS Secret Access Key"
     And the stdout should contain "AWS Secret Access Key"
     And the stdout should contain "MFA device (leave blank for none)"
-    And the stdout should contain "Unknown MFA device `mfadevicename`"
+    And the stderr should contain "Unknown MFA device `mfadevicename`"
