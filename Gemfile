@@ -5,6 +5,6 @@ gemspec
 
 group :development do
   gem 'guard'
-  gem 'guard-cucumber'
+  gem 'guard-cucumber', '~> 2.0'
   gem 'guard-rspec'
 end
