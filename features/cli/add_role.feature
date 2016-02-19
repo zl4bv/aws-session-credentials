@@ -42,4 +42,4 @@ Feature: Storing AWS IAM roles
     Then the exit status should be 1
     And the stdout should contain "Role Name"
     And the stdout should contain "Account Name or ID"
-    And the stderr should contain "Unknown MFA device `mfadevicename`"
+    And the stderr should contain "Unknown account name `AccountName`"
