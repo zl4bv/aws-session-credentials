@@ -17,4 +17,4 @@ Cucumber::Rake::Task.new(:features) do |task|
   task.cucumber_opts = 'features --format pretty'
 end
 
-task :default => ['spec:unit', 'spec:integration', 'features']
+task :default => ['spec:unit', 'spec:integration']
