@@ -52,8 +52,8 @@ module Aws
                       default: nil
         desc 'new', 'Generates new AWS session credentials'
         def new
-          cli_opts = options.transform_keys { |key| key.sub(/-/, '_').to_sym }
-          SessionManager.new.new_session(cli_opts)
+          cli_opts = options.transform_keys { |key| key.sub(/-/, '_') }
+          SessionManager.new.new_session(cli_opts.deep_symbolize_keys)
         end
 
         method_option 'role-alias',
@@ -102,7 +102,7 @@ module Aws
                       default: nil
         desc 'assume-role', 'Assumes a role'
         def assume_role
-          cli_opts = options.transform_keys { |key| key.sub(/-/, '_').to_sym }
+          cli_opts = options.transform_keys { |key| key.sub(/-/, '_') }
 
           if cli_opts['role_alias']
             cf = Config.new(path: cli_opts['config_file'])
@@ -153,7 +153,7 @@ module Aws
                       default: nil
         desc 'configure', 'Configures a new source profile'
         def configure
-          cli_opts = options.transform_keys { |key| key.sub(/-/, '_').to_sym }
+          cli_opts = options.transform_keys { |key| key.sub(/-/, '_') }
           cli_opts['source_profile'] ||= ask('Source profile (leave blank for "default"):')
           cli_opts['aws_access_key_id'] ||= ask('AWS Access Key ID:')
           cli_opts['aws_secret_access_key'] ||= ask('AWS Secret Access Key:', echo: false)
@@ -227,7 +227,7 @@ module Aws
                       default: nil
         desc 'configure-role', 'Configures a new role'
         def configure_role
-          cli_opts = options.transform_keys { |key| key.sub(/-/, '_') .to_sym }
+          cli_opts = options.transform_keys { |key| key.sub(/-/, '_') }
           cli_opts['role_alias'] ||= ask('Provide an alias for this role:')
 
           if cli_opts['role_account'] && cli_opts['role_name']
