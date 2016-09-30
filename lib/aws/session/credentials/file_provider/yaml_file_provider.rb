@@ -25,6 +25,7 @@ module Aws
           # @param [Hash] hash
           def write(hash)
             hsh = hash.deep_stringify_keys
+            FileUtils.mkdir_p(File.dirname(path)) unless File.exist?(path)
             File.open(path, 'w', 0600) { |file| file.write(YAML.dump(hsh)) }
           end
         end
