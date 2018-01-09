@@ -294,6 +294,28 @@ module Aws
           store.print_profiles(self)
         end
 
+        method_option 'profile',
+                      type: :string,
+                      desc: 'Profile that will used when print environment variables',
+                      default: 'default'
+
+        desc 'shell-env', 'Prints shell commands to set environment variables containing AWS credentials'
+        def shell_env(shell_name = '')
+          prof = CredentialFile.new.profile(options['profile'])
+          case shell_name
+          when 'bash'
+            puts <<-EOF
+export AWS_ACCESS_KEY_ID="#{prof.aws_access_key_id}"
+export AWS_SECRET_ACCESS_KEY="#{prof.aws_secret_access_key}"
+export AWS_SESSION_TOKEN="#{prof.aws_session_token}"
+EOF
+          when ''
+            raise "Please specify a shell. Currently supported shells are: bash"
+          else
+            raise "Unsupported shell '#{shell_name}'"
+          end
+        end
+
         desc 'version', 'Prints the current version'
         def version
           puts "aws-session-credentials #{Aws::Session::Credentials::VERSION}"

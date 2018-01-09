@@ -105,6 +105,16 @@ OATH credential name: user.name@example.com@accountalias
 See `aws-session --help configure` for more info. By default, the configuration
 is stored in `~/.aws/aws-session-config.yml`.
 
+### Shell environment variables
+
+Credentials can be set as environment variables in your current shell by running something like the following example. Consider generating new session credentials or assuming a role before running this command.
+
+```
+eval "$(aws-session shell-env bash)"
+```
+
+Currently only _bash_ is supported.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/zl4bv/aws-session-credentials. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
