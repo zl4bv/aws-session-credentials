@@ -309,8 +309,14 @@ export AWS_ACCESS_KEY_ID="#{prof.aws_access_key_id}"
 export AWS_SECRET_ACCESS_KEY="#{prof.aws_secret_access_key}"
 export AWS_SESSION_TOKEN="#{prof.aws_session_token}"
 EOF
+          when 'powershell'
+            puts <<-EOF
+$Env:AWS_ACCESS_KEY_ID = "#{prof.aws_access_key_id}"
+$Env:AWS_SECRET_ACCESS_KEY = "#{prof.aws_secret_access_key}"
+$Env:AWS_SESSION_TOKEN = "#{prof.aws_session_token}"
+EOF
           when ''
-            raise "Please specify a shell. Currently supported shells are: bash"
+            raise "Please specify a shell. Currently supported shells are: bash and powershell"
           else
             raise "Unsupported shell '#{shell_name}'"
           end
